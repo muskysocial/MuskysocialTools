@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MuskySocials & Tools</title>
+<meta name="description" content="Browse social media account listings and order securely through WhatsApp.">
+<style>
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #171923;
+  --muted: #6b7280;
+  --accent: #6d28d9;
+  --accent2: #8b5cf6;
+  --border: #e5e7eb;
+  --success: #15803d;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  background: linear-gradient(135deg, #171923, #3b1d72);
+  color: white;
+  padding: 22px 5%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav {
+  max-width: 1180px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.logo { font-size: 22px; font-weight: 800; }
+.logo span { color: #c4b5fd; }
+.nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+}
+.hero {
+  max-width: 1180px;
+  margin: auto;
+  padding: 70px 5% 45px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(34px, 6vw, 62px);
+  margin: 0 0 15px;
+}
+.hero p {
+  max-width: 700px;
+  margin: auto;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+.badge {
+  display: inline-block;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+.controls {
+  max-width: 1180px;
+  margin: 0 auto 25px;
+  padding: 0 5%;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 12px;
+}
+input, select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  font-size: 15px;
+}
+.grid {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 5% 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.05);
+}
+.platform {
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .7px;
+}
+.card h3 { margin: 8px 0; font-size: 21px; }
+.meta { color: var(--muted); line-height: 1.7; font-size: 14px; }
+.price {
+  font-size: 25px;
+  font-weight: 900;
+  margin: 15px 0;
+}
+.status {
+  color: var(--success);
+  font-weight: 800;
+  font-size: 13px;
+}
+button, .order {
+  display: inline-block;
+  border: 0;
+  background: var(--accent);
+  color: white;
+  padding: 13px 17px;
+  border-radius: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+}
+button:hover, .order:hover { background: var(--accent2); }
+.empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 45px;
+  color: var(--muted);
+}
+footer {
+  text-align: center;
+  padding: 35px 20px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+.note {
+  max-width: 850px;
+  margin: 0 auto 35px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  font-size: 14px;
+  line-height: 1.5;
+}
+@media (max-width: 850px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .controls { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
+  .hero { padding-top: 45px; }
+}
+
+.login-overlay {
+  position: fixed; inset: 0; background: rgba(15,23,42,.72);
+  display: none; align-items: center; justify-content: center; z-index: 100;
+  padding: 20px;
+}
+.login-box {
+  width: min(430px, 100%); background: white; border-radius: 20px;
+  padding: 28px; box-shadow: 0 25px 70px rgba(0,0,0,.25);
+}
+.login-box h2 { margin-top: 0; }
+.login-box p { color: var(--muted); line-height: 1.5; }
+.login-box input { margin-bottom: 10px; }
+.login-actions { display: flex; gap: 10px; margin-top: 8px; }
+.secondary {
+  background: #ede9fe; color: #5b21b6;
+}
+.user-pill {
+  display: none; align-items: center; gap: 8px;
+  font-size: 13px; background: rgba(255,255,255,.12);
+  padding: 8px 11px; border-radius: 999px;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">MuskySocials <span>& Tools</span></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <a href="#listings">Listings</a>
+      <span class="user-pill" id="userPill"></span>
+      <button id="loginBtn" style="width:auto;padding:9px 13px;background:#fff;color:#5b21b6">Login</button>
+    </div>
+  </div>
+</header>
+
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <h2>Welcome to MuskySocials</h2>
+    <p>Log in or create a local customer account to access the marketplace.</p>
+    <input id="loginName" type="text" placeholder="Your name">
+    <input id="loginEmail" type="email" placeholder="Email address">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <div class="login-actions">
+      <button id="createLogin">Create / Log In</button>
+      <button class="secondary" id="closeLogin">Close</button>
+    </div>
+    <p style="font-size:12px;margin-bottom:0">This free version stores the login only in this browser. It is not a secure server account system.</p>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="badge">Social Media Marketplace</div>
+  <h1>Find the account you need.</h1>
+  <p>Browse available social media account listings, check the details, and contact us on WhatsApp to place your order.</p>
+</section>
+
+<div class="note">
+  <strong>How ordering works:</strong> Select an available listing → tap “Order on WhatsApp” → confirm availability and price → arrange payment directly with the seller → receive your order details after payment is verified.
+</div>
+
+<div id="gateNotice" style="max-width:1180px;margin:0 auto 20px;padding:0 5%;text-align:center;color:var(--muted)">
+  Please log in to browse listings and place orders.
+</div>
+<section class="controls" id="listings" style="display:none;">
+  <input id="search" type="search" placeholder="Search platform, niche, followers or account ID...">
+  <select id="category">
+    <option value="all">All platforms</option>
+    <option value="Instagram">Instagram</option>
+    <option value="Facebook">Facebook</option>
+    <option value="TikTok">TikTok</option>
+    <option value="X">X / Twitter</option>
+    <option value="Pinterest">Pinterest</option>
+    <option value="Services">Services</option>
+    <option value="Tools">Tools</option>
+  </select>
+</section>
+
+<section class="grid" id="grid" style="display:none;"></section>
+
+<footer>
+  © 2026 MuskySocials & Tools · Orders handled through WhatsApp
+</footer>
+
+<script>
+/*
+  ============================
+  EDIT THESE TWO VALUES FIRST
+  ============================
+*/
+const WHATSAPP_NUMBER = "234XXXXXXXXXX"; // Example: 2348012345678
+const BUSINESS_NAME = "MuskySocials & Tools";
+
+/*
+  Add your real listings here.
+  Change, add or remove products as needed.
+*/
+const listings = [
+  {id:"FB-001",platform:"Facebook",title:"Facebook Account With Page",followers:"Varies",niche:"Various",audience:"Various",price:"₦8,000+",status:"Available"},
+  {id:"FB-002",platform:"Facebook",title:"Facebook Account Without Page",followers:"Varies",niche:"Various",audience:"Various",price:"₦5,000+",status:"Available"},
+  {id:"FB-003",platform:"Facebook",title:"New Facebook Account",followers:"New",niche:"Various",audience:"Various",price:"₦4,000+",status:"Available"},
+  {id:"FB-004",platform:"Facebook",title:"Premium Facebook Account",followers:"Varies",niche:"Various",audience:"Various",price:"₦3,000–₦40,000",status:"Available"},
+  {id:"IG-001",platform:"Instagram",title:"Instagram Account",followers:"Varies",niche:"Various",audience:"Various",price:"₦6,000–₦25,000",status:"Available"},
+  {id:"IG-002",platform:"Instagram",title:"Old Instagram Account",followers:"Varies",niche:"Various",audience:"Various",price:"₦40,000+",status:"Available"},
+  {id:"TT-001",platform:"TikTok",title:"TikTok Account",followers:"Varies",niche:"Various",audience:"Various",price:"₦6,000+",status:"Available"},
+  {id:"TT-002",platform:"TikTok",title:"TikTok Account — High Followers",followers:"Plenty of followers",niche:"Various",audience:"Various",price:"₦28,000+",status:"Available"},
+  {id:"SV-001",platform:"Services",title:"All Format Service",followers:"—",niche:"Service",audience:"Various",price:"₦8,000",status:"Available"},
+  {id:"SV-002",platform:"Services",title:"Celebrity Update",followers:"—",niche:"Entertainment",audience:"Various",price:"₦16,000",status:"Available"},
+  {id:"SV-003",platform:"Services",title:"Posting All Types of Ads",followers:"—",niche:"Advertising",audience:"Various",price:"₦6,000",status:"Available"},
+  {id:"SV-004",platform:"Services",title:"Legitimate Paying Site Service",followers:"—",niche:"Online service",audience:"Various",price:"₦18,000",status:"Available"},
+  {id:"TOOL-001",platform:"Tools",title:"Google Voice",followers:"—",niche:"Communication",audience:"USA",price:"₦10,000",status:"Available"},
+  {id:"TOOL-002",platform:"Tools",title:"TextPlus",followers:"—",niche:"Communication",audience:"USA",price:"₦15,000",status:"Available"},
+  {id:"TOOL-003",platform:"Tools",title:"Talkatone",followers:"—",niche:"Communication",audience:"USA",price:"₦20,000",status:"Available"},
+  {id:"TOOL-004",platform:"Tools",title:"Nextplus",followers:"—",niche:"Communication",audience:"USA",price:"₦20,000",status:"Available"},
+  {id:"TOOL-005",platform:"Tools",title:"USA WhatsApp Service",followers:"—",niche:"Communication",audience:"USA",price:"₦5,000",status:"Available"},
+  {id:"TOOL-006",platform:"Tools",title:"Canada WhatsApp Service",followers:"—",niche:"Communication",audience:"Canada",price:"₦5,000",status:"Available"},
+  {id:"TOOL-007",platform:"Tools",title:"Germany WhatsApp Service",followers:"—",niche:"Communication",audience:"Germany",price:"₦5,000",status:"Available"},
+  {id:"TOOL-008",platform:"Tools",title:"France WhatsApp Service",followers:"—",niche:"Communication",audience:"France",price:"₦5,000",status:"Available"},
+  {id:"TOOL-009",platform:"Tools",title:"Spain WhatsApp Service",followers:"—",niche:"Communication",audience:"Spain",price:"₦6,000",status:"Available"},
+  {id:"TOOL-010",platform:"Tools",title:"Poland WhatsApp Service",followers:"—",niche:"Communication",audience:"Poland",price:"₦6,000",status:"Available"},
+  {id:"TOOL-011",platform:"Tools",title:"China WhatsApp Service",followers:"—",niche:"Communication",audience:"China",price:"₦9,000",status:"Available"},
+  {id:"TOOL-012",platform:"Tools",title:"USA Number / New TikTok Account Service",followers:"—",niche:"TikTok",audience:"USA",price:"₦14,500",status:"Available"},
+  {id:"TOOL-013",platform:"Tools",title:"USA Telegram Service",followers:"—",niche:"Communication",audience:"USA",price:"₦6,000",status:"Available"},
+  {id:"TOOL-014",platform:"Tools",title:"UK WhatsApp Service",followers:"—",niche:"Communication",audience:"UK",price:"₦6,000",status:"Available"},
+  {id:"TOOL-015",platform:"Tools",title:"Signal Number Service",followers:"—",niche:"Communication",audience:"Various",price:"₦4,000",status:"Available"},
+  {id:"TOOL-016",platform:"Tools",title:"POF Number Service",followers:"—",niche:"Communication",audience:"Various",price:"₦7,000",status:"Available"},
+  {id:"TOOL-017",platform:"Tools",title:"Viber Number Service",followers:"—",niche:"Communication",audience:"Various",price:"₦7,000",status:"Available"}
+];
+
+function orderLink(item) {
+  const message =
+    `Hello ${BUSINESS_NAME}, I am interested in ${item.platform} listing ${item.id} (${item.title}). ` +
+    `Please confirm if it is still available and provide the payment details.`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+function render() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const category = document.getElementById("category").value;
+  const grid = document.getElementById("grid");
+
+  const filtered = listings.filter(item => {
+    const text = Object.values(item).join(" ").toLowerCase();
+    const matchesSearch = !q || text.includes(q);
+    const matchesCategory = category === "all" || item.platform === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty">No matching accounts found.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(item => `
+    <article class="card">
+      <div class="platform">${item.platform}</div>
+      <h3>${item.title}</h3>
+      <div class="meta">
+        <strong>ID:</strong> ${item.id}<br>
+        <strong>Followers:</strong> ${item.followers}<br>
+        <strong>Niche:</strong> ${item.niche}<br>
+        <strong>Audience:</strong> ${item.audience}
+      </div>
+      <div class="price">${item.price}</div>
+      <div class="status">● ${item.status}</div>
+      <br>
+      <a class="order" href="${orderLink(item)}" target="_blank" rel="noopener">
+        Order on WhatsApp
+      </a>
+    </article>
+  `).join("");
+}
+
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("category").addEventListener("change", render);
+render();
+
+const loginOverlay = document.getElementById("loginOverlay");
+const loginBtn = document.getElementById("loginBtn");
+const closeLogin = document.getElementById("closeLogin");
+const createLogin = document.getElementById("createLogin");
+const userPill = document.getElementById("userPill");
+const gateNotice = document.getElementById("gateNotice");
+const controls = document.querySelector(".controls");
+const gridEl = document.getElementById("grid");
+
+function setLoggedIn(user) {
+  localStorage.setItem("muskyUser", JSON.stringify(user));
+  loginOverlay.style.display = "none";
+  gateNotice.style.display = "none";
+  controls.style.display = "grid";
+  gridEl.style.display = "grid";
+  userPill.style.display = "inline-flex";
+  userPill.textContent = "Hi, " + user.name.split(" ")[0];
+  loginBtn.textContent = "Log out";
+  render();
+}
+function logout() {
+  localStorage.removeItem("muskyUser");
+  gateNotice.style.display = "block";
+  controls.style.display = "none";
+  gridEl.style.display = "none";
+  userPill.style.display = "none";
+  loginBtn.textContent = "Login";
+}
+loginBtn.addEventListener("click", () => {
+  const existing = localStorage.getItem("muskyUser");
+  if (existing) logout();
+  else loginOverlay.style.display = "flex";
+});
+closeLogin.addEventListener("click", () => loginOverlay.style.display = "none");
+createLogin.addEventListener("click", () => {
+  const name = document.getElementById("loginName").value.trim();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  if (!name || !email || password.length < 4) {
+    alert("Please enter your name, a valid email and a password of at least 4 characters.");
+    return;
+  }
+  setLoggedIn({name, email});
+});
+try {
+  const saved = JSON.parse(localStorage.getItem("muskyUser") || "null");
+  if (saved && saved.name) setLoggedIn(saved);
+} catch(e) {}
+
+</script>
+</body>
+</html>

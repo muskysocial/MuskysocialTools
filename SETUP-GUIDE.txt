@@ -1,0 +1,35 @@
+MUSKYSOCIALS & TOOLS — FREE WEBSITE STARTER
+
+1. Open index.html in a browser to preview the site.
+
+2. In index.html, find:
+   const WHATSAPP_NUMBER = "234XXXXXXXXXX";
+
+   Replace it with your WhatsApp number in international format.
+   Example:
+   const WHATSAPP_NUMBER = "2348012345678";
+
+3. Find the "listings" section and replace the sample accounts with your real listings.
+   Each listing has:
+   - id
+   - platform
+   - title
+   - followers
+   - niche
+   - audience
+   - price
+   - status
+
+4. The website DOES NOT collect payment.
+   Customers click "Order on WhatsApp", discuss the order and payment with you,
+   and you manually confirm payment before delivering anything.
+
+FREE HOSTING OPTIONS
+- GitHub Pages: upload index.html to a public repository and enable Pages.
+- Netlify: upload the folder through its free deployment options.
+- Cloudflare Pages: connect/upload the project on its free tier.
+
+IMPORTANT
+- Do not list stolen, hacked, compromised, or fraudulently obtained accounts.
+- Check the rules of each social platform regarding account transfers/sales.
+- Keep proof of ownership and order records.
